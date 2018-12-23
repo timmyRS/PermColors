@@ -21,7 +21,7 @@ public class PermColors extends JavaPlugin implements CommandExecutor, Listener
 
 	static String applyColor(String message)
 	{
-		return message == null ? "" : message.replace("&", "§").replace("§", "§");
+		return message == null ? "" : message.replace("&", "§").replace("§§", "§");
 	}
 
 	@Override
@@ -34,11 +34,11 @@ public class PermColors extends JavaPlugin implements CommandExecutor, Listener
 		getConfig().addDefault("playerList.enabled", true);
 		getConfig().addDefault("playerList.format", "%color%%player%");
 		getConfig().addDefault("chat.enabled", true);
-		getConfig().addDefault("chat.message", "%color%&l%prefix%&r&e%player%&r %message%");
+		getConfig().addDefault("chat.message", "%color%%prefix%&r&e%player%&r %message%");
 		getConfig().addDefault("join.enabled", true);
-		getConfig().addDefault("join.message", "%color%&l%prefix%&r&e%player% joined the game");
+		getConfig().addDefault("join.message", "%color%%prefix%&r&e%player% joined the game");
 		getConfig().addDefault("quit.enabled", true);
-		getConfig().addDefault("quit.message", "%color%%l%prefix%&r&e%player% left the game");
+		getConfig().addDefault("quit.message", "%color%%prefix%&r&e%player% left the game");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		reloadPermColorsConfig();
@@ -155,7 +155,24 @@ public class PermColors extends JavaPlugin implements CommandExecutor, Listener
 		if(a.length > 0 && a[0].equalsIgnoreCase("reload") && s.hasPermission("permcolors.reload"))
 		{
 			reloadPermColorsConfig();
-			s.sendMessage("§aReloaded the configuration.");
+			s.sendMessage("§aPermColors has been reloaded.");
+		}
+		else if(a.length > 1 && a[0].equalsIgnoreCase("recolor") && s.hasPermission("permcolors.recolor"))
+		{
+			final Player p = getServer().getPlayer(a[1]);
+			if(p != null && p.isOnline())
+			{
+				synchronized(playerCache)
+				{
+					playerCache.remove(p);
+				}
+				applyColor(p);
+				s.sendMessage("§a" + p.getName() + " has been recolored.");
+			}
+			else
+			{
+				s.sendMessage("§4'" + a[0] + "' is not online.");
+			}
 		}
 		else
 		{
@@ -167,7 +184,7 @@ public class PermColors extends JavaPlugin implements CommandExecutor, Listener
 
 class Scheme
 {
-	final String color;
+	private final String color;
 	private final String prefix;
 
 	Scheme(String color, String prefix)
