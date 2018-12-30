@@ -144,7 +144,14 @@ public class PermColors extends JavaPlugin implements CommandExecutor, Listener
 	{
 		if(!e.isCancelled() && getConfig().getBoolean("chat.enabled"))
 		{
-			e.setFormat(getScheme(e.getPlayer()).apply(applyColor(getConfig().getString("chat.message"))).replace("%player%", "%1$s").replace("%message%", e.getPlayer().hasPermission("permcolors.colorfulchatmessages") ? applyColor(e.getMessage()) : "%2$s"));
+			if(e.getPlayer().hasPermission("permcolors.chat"))
+			{
+				e.setFormat(getScheme(e.getPlayer()).apply(applyColor(getConfig().getString("chat.message"))).replace("%player%", "%1$s").replace("%message%", e.getPlayer().hasPermission("permcolors.chat.color") ? applyColor(e.getMessage()) : "%2$s"));
+			}
+			else
+			{
+				e.setCancelled(true);
+			}
 		}
 	}
 

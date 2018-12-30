@@ -28,10 +28,18 @@ Using two ampersands will result in a single ampersand.
 
 ## Permissions
 
-Permission | Description
------------|------------
-`permcolors.reload` | Allows the player to use `/permcolors reload` which reloads the config and recolors every player.
-`permcolors.recolor` | Allows the player to use `/permcolors recolor <player>` so the given player's scheme will be refreshed.
-`permcolors.colorfulchatmessages` | Allows the player to use color in their chat messages.
+Permission | Default | Description
+-----------|---------|------------
+`permcolors.chat` | Everyone | Allows the player to send chat messages.
+`permcolors.chat.color` | OPs | Allows the player to use color in their chat messages.
+`permcolors.reload` | OPs | Allows the player to use `/permcolors reload` which reloads the config and recolors every player.
+`permcolors.recolor` | OPs | Allows the player to use `/permcolors recolor <player>` so the given player's scheme will be refreshed.
 
-All permissions are granted only to OPs by default.
+If you don't want people to be able to send chat messages by default, use the `permissions.yml` as follows:
+
+    default:
+      default: true
+      children:
+        permcolors.chat: false
+
+Please note that `permcolors.chat` permissions will not work if you disable the chat module.

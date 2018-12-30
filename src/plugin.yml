@@ -1,6 +1,6 @@
 ---
 name: PermColors
-version: 1.1.1
+version: 1.2
 main: de.timmyrs.PermColors
 author: timmyRS
 website: https://timmyrs.de
@@ -9,9 +9,18 @@ commands:
   permcolors: {}
 
 permissions:
+  permcolors.chat:
+    default: true
+  permcolors.chat.color:
+    children:
+      permcolors.chat: true
   permcolors.*:
     default: 'op'
     children:
+      permcolors.chat.color: true
       permcolors.reload: true
       permcolors.recolor: true
-      permcolors.colorfulchatmessages: true
+  # backward compatibility
+  permcolors.colorfulchatmessages:
+    children:
+      permcolors.chat.color: true
